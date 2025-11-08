@@ -50,57 +50,117 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Consultation Form Submission
-const consultationForm = document.getElementById('consultationForm');
-const formMessage = document.getElementById('formMessage');
+// API Configuration - Update this URL based on your backend
+const API_BASE_URL = 'http://localhost:8080/api'; // Java backend
+// const API_BASE_URL = 'http://localhost:3001/api'; // Node.js backend (alternative)
 
-consultationForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const formData = {
-    name: document.getElementById('name').value,
-    phone: document.getElementById('phone').value,
-    company: document.getElementById('company').value,
-    email: document.getElementById('email').value,
-    service: document.getElementById('service').value
-  };
-  
-  // Validate required fields
-  if (!formData.name || !formData.phone || !formData.email || !formData.service) {
-    showToast('Please fill in all required fields', 'error');
-    return;
-  }
-  
-  // Disable submit button
-  const submitBtn = consultationForm.querySelector('button[type="submit"]');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Sending...';
-  
-  try {
-    const response = await fetch('http://localhost:3001/api/send-consultation', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    });
-    
-    const data = await response.json();
-    
-    if (response.ok) {
-      showToast('Consultation request sent successfully! We will contact you soon.', 'success');
-      consultationForm.reset();
-    } else {
-      showToast(data.error || 'Failed to send request. Please try again.', 'error');
+// Consultation Form Submission
+const consultationForm = document.getElementById('consultation-form');
+if (consultationForm) {
+  consultationForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      company: document.getElementById('company').value,
+      service: document.getElementById('service').value,
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/consultation`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        showToast('Consultation request sent successfully! We will contact you soon.', 'success');
+        consultationForm.reset();
+      } else {
+        showToast(data.message || 'Failed to send consultation request. Please try again.', 'error');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      showToast('An error occurred. Please try again later.', 'error');
     }
-  } catch (error) {
-    console.error('Error:', error);
-    showToast('An error occurred. Please try again.', 'error');
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Get Consultation';
-  }
-});
+  });
+}
+
+// Footer Consultation Form
+const footerConsultationForm = document.getElementById('footer-consultation-form');
+if (footerConsultationForm) {
+  footerConsultationForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = {
+      name: document.getElementById('footer-name').value,
+      email: document.getElementById('footer-email').value,
+      phone: document.getElementById('footer-phone').value,
+      company: document.getElementById('footer-company').value,
+      service: document.getElementById('footer-service').value,
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/consultation`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        showToast('Consultation request sent successfully! We will contact you soon.', 'success');
+        footerConsultationForm.reset();
+      } else {
+        showToast(data.message || 'Failed to send consultation request. Please try again.', 'error');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      showToast('An error occurred. Please try again later.', 'error');
+    }
+  });
+}
+
+// Newsletter Form
+const newsletterForm = document.getElementById('newsletter-form');
+if (newsletterForm) {
+  newsletterForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('newsletter-email').value;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/newsletter`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        showToast('Successfully subscribed to newsletter!', 'success');
+        newsletterForm.reset();
+      } else {
+        showToast(data.message || 'Failed to subscribe. Please try again.', 'error');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      showToast('An error occurred. Please try again later.', 'error');
+    }
+  });
+}
 
 // Footer Form Submission
 const footerForm = document.getElementById('footerForm');

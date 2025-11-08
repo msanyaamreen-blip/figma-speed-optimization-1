@@ -1,201 +1,236 @@
-# Amphitrite Technologies - HTML Version
+# Amphitrite Water Treatment Website - HTML Version
 
-This is the plain HTML, CSS, and JavaScript version of the Amphitrite Technologies website, converted from the original Next.js TypeScript application.
+This is the plain HTML, CSS, and JavaScript version of the Amphitrite Water Treatment website with a **Java Spring Boot backend**.
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 html-version/
-├── index.html          # Main HTML file
+├── index.html              # Main HTML file with all sections
 ├── css/
-│   └── styles.css      # All styles
+│   └── styles.css          # All CSS styles (converted from Tailwind)
 ├── js/
-│   └── script.js       # JavaScript functionality
-├── server.js           # Node.js backend for email
-├── package.json        # Backend dependencies
-├── .env.example        # Environment variables template
-└── README.md           # This file
+│   └── script.js           # All JavaScript functionality
+├── java-backend/           # Java Spring Boot backend
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/       # Java source code
+│   │       └── resources/  # Configuration files
+│   ├── pom.xml            # Maven dependencies
+│   └── README.md          # Backend setup instructions
+└── README.md              # This file
 ```
 
-## 🚀 Quick Start
+## Features
 
-### Prerequisites
+✅ **Fully Responsive Design** - Works on mobile, tablet, and desktop
+✅ **Java Spring Boot Backend** - RESTful API for email handling
+✅ **Email Integration** - Consultation and newsletter forms via Resend
+✅ **Interactive Components** - Carousels, accordions, smooth scrolling
+✅ **Modern Animations** - Fade-in effects, hover transitions
+✅ **Form Validation** - Client and server-side validation
+✅ **Toast Notifications** - User feedback for actions
 
-- Node.js (v14 or higher)
-- npm or yarn
-- A Resend API key (for email functionality)
+## Quick Start
 
-### Installation Steps
+### Option 1: Java Backend (Recommended)
 
-1. **Navigate to the html-version directory:**
+#### Prerequisites:
+- Java 17 or higher
+- Maven 3.6+
+- Resend API key
+
+#### Steps:
+
+1. **Navigate to the Java backend directory:**
    ```bash
-   cd public/html-version
+   cd java-backend
    ```
 
-2. **Install backend dependencies:**
+2. **Configure environment variables:**
+   ```bash
+   # On Windows (Command Prompt)
+   set RESEND_API_KEY=your_resend_api_key_here
+   set RECIPIENT_EMAIL=sanyaamreen.4813@gmail.com
+
+   # On Mac/Linux
+   export RESEND_API_KEY=your_resend_api_key_here
+   export RECIPIENT_EMAIL=sanyaamreen.4813@gmail.com
+   ```
+
+3. **Install dependencies:**
+   ```bash
+   mvn clean install
+   ```
+
+4. **Run the server:**
+   ```bash
+   mvn spring-boot:run
+   ```
+
+5. **Open the frontend:**
+   - Open `index.html` in your browser
+   - Or use a local server:
+     ```bash
+     # Python
+     python -m http.server 3000
+     
+     # Node.js (if you have http-server installed)
+     npx http-server -p 3000
+     ```
+
+6. **Access the website:**
+   - Frontend: `http://localhost:3000`
+   - Backend API: `http://localhost:8080/api`
+
+**See [java-backend/README.md](java-backend/README.md) for detailed backend setup instructions.**
+
+### Option 2: Node.js Backend (Legacy)
+
+If you prefer Node.js, the `server.js` file is still available:
+
+1. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Set up environment variables:**
-   ```bash
-   cp .env.example .env
+2. **Configure `.env` file:**
    ```
-   
-   Then edit `.env` and add your Resend API key:
-   ```
-   RESEND_API_KEY=re_your_actual_api_key_here
+   RESEND_API_KEY=your_resend_api_key_here
+   RECIPIENT_EMAIL=sanyaamreen.4813@gmail.com
+   PORT=3001
    ```
 
-4. **Start the backend server:**
+3. **Start the server:**
    ```bash
    npm start
    ```
-   
-   Or for development with auto-reload:
-   ```bash
-   npm run dev
-   ```
 
-5. **Open the website:**
-   - Open `index.html` in your browser, or
-   - Visit `http://localhost:3001` (the server also serves static files)
+4. **Open in browser:**
+   - Visit `http://localhost:3001`
 
-## 🔧 Configuration
+## API Endpoints
 
-### Email Setup
+### Java Backend (Port 8080)
 
-The website uses [Resend](https://resend.com/) for sending consultation request emails.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/health` | Health check |
+| POST | `/api/consultation` | Send consultation request |
+| POST | `/api/newsletter` | Newsletter subscription |
 
-**To get your Resend API key:**
-1. Sign up at [https://resend.com/](https://resend.com/)
-2. Go to API Keys section
-3. Create a new API key
-4. Copy the key and paste it into your `.env` file
+### Request Examples
 
-**Email recipient:**
-- All consultation requests are sent to: `sanyaamreen.4813@gmail.com`
-- To change this, edit `server.js` line 37
-
-### Port Configuration
-
-The backend server runs on port 3001 by default. To change it:
-- Edit the `PORT` variable in your `.env` file
-- Update the API endpoint URLs in `js/script.js` (lines 77 and 122)
-
-## 📋 Features
-
-### What Works
-
-✅ All page sections and layouts
-✅ Responsive design (mobile, tablet, desktop)
-✅ Navigation with smooth scrolling
-✅ Mobile hamburger menu
-✅ Contact form with email integration
-✅ Newsletter subscription
-✅ FAQ accordion
-✅ Testimonials carousel
-✅ Scroll animations
-✅ Toast notifications
-
-### API Endpoints
-
-The backend server provides these endpoints:
-
-- `POST /api/send-consultation` - Handle consultation form submissions
-- `POST /api/newsletter-subscription` - Handle newsletter signups
-- `GET /api/health` - Health check endpoint
-
-## 🎨 Customization
-
-### Changing Colors
-
-Edit the CSS variables in `css/styles.css` (lines 8-19):
-
-```css
-:root {
-  --color-primary-blue-green: #2C5F6F;
-  --color-primary-dark: #1E3A47;
-  --color-accent-teal: #00D4AA;
-  /* ... more colors ... */
+**Consultation Form:**
+```json
+POST /api/consultation
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "+91 9876543210",
+  "company": "ABC Industries",
+  "service": "Effluent Treatment Plant (ETP)"
 }
 ```
 
-### Changing Content
-
-All content is in `index.html`. Search for specific sections and modify the text, images, or links.
-
-### Changing Images
-
-Replace image URLs in `index.html` with your own images. The current images are hosted on Supabase.
-
-## 🚫 Known Limitations
-
-Compared to the Next.js version:
-
-1. **No Server-Side Rendering (SSR)** - All content is rendered client-side
-2. **No Automatic Image Optimization** - Images load at full size
-3. **No Built-in Routing** - Single page application only
-4. **Manual SEO Management** - Meta tags must be manually updated
-5. **No TypeScript** - Uses plain JavaScript instead
-
-## 🔒 Security Notes
-
-- Never commit your `.env` file to version control
-- Keep your Resend API key secret
-- The server uses CORS to allow requests from any origin (modify in production)
-- Validate all form inputs on both client and server side
-
-## 🌐 Deployment
-
-### Option 1: Static Hosting + Serverless Functions
-
-Deploy the HTML/CSS/JS to services like:
-- Netlify
-- Vercel
-- GitHub Pages
-- Cloudflare Pages
-
-Deploy the backend as serverless functions on the same platform.
-
-### Option 2: Traditional Server
-
-1. Upload all files to your web server
-2. Install Node.js on the server
-3. Run `npm install` and `npm start`
-4. Configure a reverse proxy (nginx/Apache) to serve the files
-5. Use PM2 or similar to keep the server running
-
-### Option 3: Docker
-
-Create a `Dockerfile`:
-
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --production
-COPY . .
-EXPOSE 3001
-CMD ["npm", "start"]
+**Newsletter:**
+```json
+POST /api/newsletter
+{
+  "email": "john@example.com"
+}
 ```
 
-Build and run:
+## Frontend Configuration
+
+To switch between backends, update `js/script.js`:
+
+```javascript
+// For Java backend (default)
+const API_BASE_URL = 'http://localhost:8080/api';
+
+// For Node.js backend
+// const API_BASE_URL = 'http://localhost:3001/api';
+```
+
+## Deployment
+
+### Deploy Java Backend
+
+#### Heroku:
 ```bash
-docker build -t amphitrite-website .
-docker run -p 3001:3001 --env-file .env amphitrite-website
+cd java-backend
+heroku create amphitrite-backend
+heroku config:set RESEND_API_KEY=your_key
+git push heroku main
 ```
 
-## 📞 Support
+#### AWS Elastic Beanstalk:
+1. Build JAR: `mvn clean package`
+2. Upload `target/water-treatment-backend-1.0.0.jar`
+3. Configure environment variables
 
-For questions or issues with this HTML version:
-- Email: info@amphitrite.com
-- Phone: +91 98410 12345
+#### Docker:
+```bash
+cd java-backend
+docker build -t amphitrite-backend .
+docker run -p 8080:8080 -e RESEND_API_KEY=your_key amphitrite-backend
+```
 
-## 📄 License
+### Deploy Frontend
 
-MIT License - feel free to use this template for your own projects.
+Upload these files to any static hosting:
+- **Netlify**: Drag and drop the folder
+- **Vercel**: `vercel deploy`
+- **GitHub Pages**: Push to `gh-pages` branch
+- **AWS S3**: Upload via AWS Console
 
----
+## Browser Support
 
-**Amphitrite Technologies** - Clean Water, Sustainable Future 🌊
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Customization
+
+### Colors
+Edit color variables in `css/styles.css`:
+```css
+:root {
+  --primary-blue-green: #2C5F6F;
+  --accent-teal: #00D4AA;
+  /* Add your colors */
+}
+```
+
+### Content
+Edit text content directly in `index.html`
+
+### Functionality
+Modify behavior in `js/script.js`
+
+## Technologies
+
+**Frontend:**
+- HTML5
+- CSS3 (converted from Tailwind CSS)
+- Vanilla JavaScript (ES6+)
+
+**Backend:**
+- Java 17
+- Spring Boot 3.2.0
+- Spring WebFlux (HTTP client)
+- Maven (build tool)
+- Resend API (email service)
+
+## Support
+
+For questions or issues:
+- Email: sanyaamreen.4813@gmail.com
+- Check the backend README: [java-backend/README.md](java-backend/README.md)
+
+## License
+
+© 2025 Amphitrite Technologies. All rights reserved.
